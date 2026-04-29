@@ -1,0 +1,23 @@
+{
+    'name': 'Service Order',
+    'version': '17.0.1.0.0',
+    'summary': 'Standalone module for managing service orders with order lines, discounts, and reports',
+    'category': 'Services',
+    'author': 'Zungg',
+    'depends': ['base', 'mail', 'product', 'account'],
+    'data': [
+        'security/res_groups.xml',
+        'security/ir.model.access.csv',
+        'data/sequence.xml',
+        'data/email_templates.xml',
+        'data/sample_partners.xml',
+        'views/partner_views.xml',
+        'views/service_order_views.xml',
+        'views/menu.xml',
+        'report/report_action.xml',
+        'report/service_order_report.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}

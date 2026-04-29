@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_service_order_user,service.order.user,model_service_order,group_service_order_user,1,1,1,0
+access_service_order_manager,service.order.manager,model_service_order,group_service_order_manager,1,1,1,1
+access_service_order_line_user,service.order.line.user,model_service_order_line,group_service_order_user,1,1,1,1
+access_service_order_partner_user,service.order.partner.user,model_service_order_partner,group_service_order_user,1,1,1,0
+access_service_order_partner_manager,service.order.partner.manager,model_service_order_partner,group_service_order_manager,1,1,1,1

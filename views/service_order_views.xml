@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_service_order_tree" model="ir.ui.view">
+        <field name="name">service.order.tree</field>
+        <field name="model">service.order</field>
+        <field name="arch" type="xml">
+            <tree string="Service Orders"
+                  decoration-info="state == 'draft'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-success="state == 'confirmed'">
+                <field name="name"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="order_date"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-muted="state == 'cancelled'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'sent'"/>
+                <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_service_order_form" model="ir.ui.view">
+        <field name="name">service.order.form</field>
+        <field name="model">service.order</field>
+        <field name="arch" type="xml">
+            <form string="Service Order">
+                <header>
+                    <button name="action_send" string="Send" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'sent'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('cancelled','confirmed')"/>
+                    <button name="action_reset" string="Reset to Draft" type="object" invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" placeholder="Select customer..." options="{'no_create': True}">
+                                <form>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="phone"/>
+                                        <field name="email"/>
+                                        <field name="address"/>
+                                    </group>
+                                </form>
+                            </field>
+                            <field name="order_date"/>
+                        </group>
+                        <group>
+                            <field name="currency_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Service Details" name="service_lines">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="service_type" string="Loại"/>
+                                    <field name="product_id" string="Dịch vụ" domain="[('type', '=', 'service')]"/>
+                                    <field name="name" string="Mô tả"/>
+                                    <field name="quantity" string="SL"/>
+                                    <field name="price_unit" string="Đơn giá"/>
+                                    <field name="discount" string="Giảm giá (%)" widget="percentage"/>
+                                    <field name="price_subtotal" string="Thành tiền" widget="monetary"/>
+                                </tree>
+                            </field>
+
+                            <group class="oe_subtotal_footer oe_right" name="service_totals">
+                                <field name="amount_untaxed" string="Cộng tiền hàng" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax" string="Thuế Ato (1%)" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_total" string="Tổng cộng"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <div class="clearfix"/>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" placeholder="Enter notes..." nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

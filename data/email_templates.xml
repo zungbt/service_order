@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="email_template_send" model="mail.template">
+        <field name="name">Service Order: Sent</field>
+        <field name="model_id" ref="service_order.model_service_order"/>
+        <field name="subject">[Service Order] {{ object.name }} đã được gửi</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                <p>Kính chào <strong><t t-out="object.partner_id.name"/></strong>,</p>
+                <p>Đơn dịch vụ <strong><t t-out="object.name"/></strong> của quý khách đã được gửi.</p>
+
+                <div style="margin: 16px 0px; padding: 15px; border-left: 3px solid #875A7B; background-color: #F8F8F8;">
+                    <strong>Chi tiết đơn dịch vụ:</strong><br/>
+                    - Ngày đặt: <span t-field="object.order_date" t-options='{"widget": "datetime", "format": "dd/MM/yyyy HH:mm:ss"}'/><br/>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; background-color: white;">
+                        <thead>
+                            <tr style="background-color: #eee;">
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Loại</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Dịch vụ</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">SL</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Đơn giá</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Giảm giá</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="object.line_ids" t-as="line">
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;"><t t-out="line.service_type"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;"><t t-out="line.product_id.name"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><t t-out="line.quantity"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><t t-esc="str(line.discount) + '%'"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;">Cộng tiền hàng:</td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="object.amount_untaxed" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;">Thuế Ato (1%):</td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="object.amount_tax" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;"><strong>Tổng cộng:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: #875A7B;"><strong><span t-field="object.amount_total" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <p>Trân trọng!</p>
+            </div>
+        </field>
+    </record>
+
+    <record id="email_template_confirm" model="mail.template">
+        <field name="name">Service Order: Confirmed</field>
+        <field name="model_id" ref="service_order.model_service_order"/>
+        <field name="subject">[Service Order] {{ object.name }} đã được xác nhận</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                <p>Kính chào <strong><t t-out="object.partner_id.name"/></strong>,</p>
+                <p>Đơn dịch vụ <strong><t t-out="object.name"/></strong> của quý khách đã được <strong>XÁC NHẬN</strong>.</p>
+
+                <div style="margin: 16px 0px; padding: 15px; border-left: 3px solid #00A09D; background-color: #F8F8F8;">
+                    <strong>Chi tiết đơn dịch vụ:</strong><br/>
+                    - Ngày đặt: <span t-field="object.order_date" t-options='{"widget": "datetime", "format": "dd/MM/yyyy HH:mm:ss"}'/><br/>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; background-color: white;">
+                        <thead>
+                            <tr style="background-color: #eee;">
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Loại</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Dịch vụ</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">SL</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Đơn giá</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Giảm giá</th>
+                                <th style="border: 1px solid #ddd; padding: 8px; text-align: right;">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="object.line_ids" t-as="line">
+                                <tr>
+                                    <td style="border: 1px solid #ddd; padding: 8px;"><t t-out="line.service_type"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px;"><t t-out="line.product_id.name"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><t t-out="line.quantity"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><t t-esc="str(line.discount) + '%'"/></td>
+                                    <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;">Cộng tiền hàng:</td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="object.amount_untaxed" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;">Thuế Ato (1%):</td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right;"><span t-field="object.amount_tax" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border: 1px solid #ddd; padding: 8px; text-align: right;"><strong>Tổng cộng:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: #00A09D;"><strong><span t-field="object.amount_total" t-options='{"widget": "monetary", "display_currency": object.currency_id}'/></strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <p>Cảm ơn quý khách!</p>
+            </div>
+        </field>
+    </record>
+</odoo>

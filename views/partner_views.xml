@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_service_order_partner_tree" model="ir.ui.view">
+        <field name="name">service.order.partner.tree</field>
+        <field name="model">service.order.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_service_order_partner_form" model="ir.ui.view">
+        <field name="name">service.order.partner.form</field>
+        <field name="model">service.order.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_service_order_partner" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">service.order.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

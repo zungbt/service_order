@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_service_order_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h2 style="color: #875a7b; font-weight: bold;">SERVICE ORDER</h2>
+                                <h4 style="margin-top: -10px;">Code: <t t-esc="o.name"/></h4>
+                            </div>
+                        </div>
+
+                        <div class="row mt16 mb16" style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                            <div class="col-6">
+                                <strong>Customer:</strong>
+                                <p t-field="o.partner_id.name" style="margin:0;"/>
+                                <p t-field="o.partner_id.address" style="margin:0; font-size: 0.9em; color: #666;"/>
+                                <p t-field="o.partner_id.phone" style="margin:0; font-size: 0.9em; color: #666;"/>
+                                <p t-field="o.partner_id.email" style="margin:0; font-size: 0.9em; color: #666;"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Order Information:</strong>
+                                <div><b>Order Date:</b> <span t-field="o.order_date" t-options='{"widget": "datetime", "format": "dd/MM/yyyy"}'/></div>
+                                <div class="mt8"><strong>Status:</strong> <span t-field="o.state" style="text-transform: capitalize;"/></div>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm o_main_table mt16">
+                            <thead>
+                                <tr style="background-color: #f2f2f2;">
+                                    <th>#.</th>
+                                    <th>Loại</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Mô tả</th>
+                                    <th class="text-end">SL</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end">Giảm giá</th>
+                                    <th class="text-end">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="sequence" t-value="1"/>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <tr>
+                                        <td><span t-esc="sequence"/></td>
+                                        <td><span t-field="line.service_type"/></td>
+                                        <td><span t-field="line.product_id.name"/></td>
+                                        <td><span t-field="line.name"/></td>
+                                        <td class="text-end"><span t-field="line.quantity"/></td>
+                                        <td class="text-end"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <td class="text-end"><span t-esc="str(line.discount) + '%'"/></td>
+                                        <td class="text-end o_price_total"><span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        <t t-set="sequence" t-value="sequence + 1"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="clearfix" name="so_total_summary">
+                            <div id="total" class="row" name="total">
+                                <div class="col-6 ms-auto">
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><strong>Cộng tiền hàng</strong></td>
+                                            <td class="text-end">
+                                                <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Thuế Ato (1%)</strong></td>
+                                            <td class="text-end">
+                                                <span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-black o_total" style="border-top: 1px solid black !important;">
+                                            <td><strong>Tổng cộng</strong></td>
+                                            <td class="text-end">
+                                                <span t-field="o.amount_total" style="font-weight: bold; font-size: 1.2em;" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt16">
+                            <div class="col-12">
+                                <strong>Notes:</strong>
+                                <p t-field="o.note" style="min-height: 50px; font-style: italic; color: #555;"/>
+                            </div>
+                        </div>
+
+                        <div class="row mt64">
+                            <div class="col-6 text-center">
+                                <p><strong>Customer Signature</strong></p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <p><strong>Prepared By</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
