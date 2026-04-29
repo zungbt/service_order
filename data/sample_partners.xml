@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Sample Partners -->
         <record id="sample_partner_1" model="service.order.partner">
             <field name="name">Nguyễn Văn A</field>
             <field name="phone">0909123456</field>
